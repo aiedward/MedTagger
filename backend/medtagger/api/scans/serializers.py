@@ -82,5 +82,10 @@ out__new_slice = api.model('Newly created Slice model', {
     'slice_id': fields.String(description='Slice\'s ID', attribute='id'),
 })
 
+out__label_tag = api.model('Label Tag model', {
+    'key': fields.String(description='Label\'s Tag key', attribute='key'),
+    'name': fields.String(description='Label\'s Tag name', attribute='name'),
+})
+
 args__random_scan = reqparse.RequestParser()
 args__random_scan.add_argument('category', type=str, required=True, help='Scan\'s category')

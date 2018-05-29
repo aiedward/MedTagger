@@ -71,6 +71,20 @@ class ScanCategories(Resource):
         return business.create_scan_category(key, name, image_path), 201
 
 
+@scans_ns.route('/<string:category_key>/tags')
+class LabelTags(Resource):
+    """Endpoint that manages Label Tags"""
+    @staticmethod
+    @login_required
+    @scans_ns.marshal_with(serializers.out__label_tag)
+    @scans_ns.doc(security='token')
+    @scans_ns.doc(description='Returns all available Label Tags for given Scan Category.')
+    @scans_ns.doc(responses={200: 'Success'})
+    def get(category_key: str) -> Any:
+        """Return all available Label Tags for given Scan Category."""
+        return business.get_available_label_tags_for_category(category_key)
+
+
 @scans_ns.route('/random')
 class Random(Resource):
     """Endpoint that returns random scan for labeling."""

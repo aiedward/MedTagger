@@ -14,6 +14,16 @@ class LabelTagRepository(object):
         return LabelTag.query.all()
 
     @staticmethod
+    def get_all_tags_for_category(category_key: str) -> List[LabelTag]:
+        """Return list of all Label Tags for given Scan Category.
+
+        :param category_key: key for a Scan Category
+        :return: Label Tags list
+        """
+        a = LabelTag.query.filter(LabelTag.scan_category.key == category_key).all()
+        print(a)
+
+    @staticmethod
     def get_label_tag_by_key(label_tag_key: str) -> LabelTag:
         """Fetch Label Tag from database."""
         return LabelTag.query.filter(LabelTag.key == label_tag_key).one()

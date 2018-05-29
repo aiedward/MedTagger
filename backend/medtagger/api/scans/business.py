@@ -8,7 +8,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from medtagger.api.exceptions import NotFoundException, InvalidArgumentsException
 from medtagger.repositories.label_tag import LabelTagRepository
 from medtagger.types import ScanID, LabelPosition, LabelShape, LabelingTime, LabelID
-from medtagger.database.models import ScanCategory, Scan, Slice, Label, SliceOrientation
+from medtagger.database.models import ScanCategory, Scan, Slice, Label, SliceOrientation, LabelTag
 from medtagger.definitions import LabelTool
 from medtagger.repositories.labels import LabelsRepository
 from medtagger.repositories.slices import SlicesRepository
@@ -26,6 +26,15 @@ def get_available_scan_categories() -> List[ScanCategory]:
     :return: list of Scan Categories
     """
     return ScanCategoriesRepository.get_all_categories()
+
+
+def get_available_label_tags_for_category(category_key: str) -> List[LabelTag]:
+    """Fetch list of all available Label Tags for given Scan Category.
+
+    :param category_key: key representing Scan Category
+    :return: list of Label Tags
+    """
+    return LabelTagRepository.get_all_tags_for_category(category_key)
 
 
 def scan_category_is_valid(category_key: str) -> bool:
