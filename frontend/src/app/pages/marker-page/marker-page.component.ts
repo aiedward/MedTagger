@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 
 import {ScanService} from '../../services/scan.service';
 import {MarkerComponent} from '../../components/marker/marker.component';
-import {ScanMetadata} from '../../model/ScanMetadata';
+import {ScanCategory, ScanMetadata} from '../../model/ScanMetadata';
 import {MarkerSlice} from '../../model/MarkerSlice';
 import {ROISelection3D} from '../../model/ROISelection3D';
 import {RectROISelector} from '../../components/selectors/RectROISelector';
@@ -11,9 +11,8 @@ import {ROISelection2D} from '../../model/ROISelection2D';
 import {DialogService} from '../../services/dialog.service';
 import {Location} from '@angular/common';
 import {MatSnackBar} from '@angular/material';
-import {LabelTag} from "../../model/LabelTag";
-import {LabelListItem} from "../../model/LabelListItem";
-import {LabelExplorerComponent} from "../../components/label-explorer/label-explorer.component";
+import {LabelExplorerComponent} from '../../components/label-explorer/label-explorer.component';
+import {CategoryService} from '../../services/category.service';
 
 
 @Component({
@@ -30,23 +29,32 @@ export class MarkerPageComponent implements OnInit {
 
     @ViewChild(LabelExplorerComponent) labelExplorer: LabelExplorerComponent;
 
-	// TODO: get labelling context from categry
-	tags: Array<LabelTag> = [
-		new LabelTag("All", "ALL", ["RECTANGLE"])
-	];
-
     scan: ScanMetadata;
     category: string;
+    scanCategory: ScanCategory;
+    currentTag: string;
     lastSliceID = 0;
     startTime: Date;
 
-    constructor(private scanService: ScanService, private route: ActivatedRoute, private dialogService: DialogService,
+    constructor(private scanService: ScanService, private categoryService: CategoryService, private route: ActivatedRoute, private dialogService: DialogService,
                 private location: Location, private snackBar: MatSnackBar) {
         console.log('MarkerPage constructor', this.marker);
     }
 
     ngOnInit() {
         console.log('MarkerPage init', this.marker);
+
+        this.scanCategory = this.categoryService.getCurrentCategory();
+
+        if (this.scanCategory.tags.length === 0) {
+             this.dialogService
+                    .openInfoDialog('There are no tags assigned to this category!', 'Please try another category!', 'Go back')
+                    .afterClosed()
+                    .subscribe(() => {
+                        this.location.back();
+                    });
+             return;
+        }
 
         this.marker.setSelector(new RectROISelector(this.marker.getCanvas()));
         this.marker.setLabelExplorer(this.labelExplorer);

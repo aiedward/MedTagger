@@ -4,13 +4,13 @@ export class ScanCategory {
     key: string;
     name: string;
     imagePath: string;
-    availableTags: LabelTag[];
+    tags: LabelTag[];
 
-    constructor(key: string, name: string, imagePath: string, availableTags: LabelTag[]) {
+    constructor(key: string, name: string, imagePath: string, tags: LabelTag[]) {
         this.key = key;
         this.name = name;
         this.imagePath = imagePath;
-        this.availableTags = availableTags;
+        this.tags = tags;
     }
 }
 

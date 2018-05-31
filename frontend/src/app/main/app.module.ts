@@ -57,6 +57,7 @@ import {InfoDialog} from "../dialogs/info.dialog";
 import {MedTaggerWebSocket} from "../services/websocket.service";
 
 import {LabelExplorerComponent} from "../components/label-explorer/label-explorer.component";
+import {CategoryService} from '../services/category.service';
 
 @NgModule({
     declarations: [
@@ -119,6 +120,7 @@ import {LabelExplorerComponent} from "../components/label-explorer/label-explore
         AuthGuard,
         AccountService,
         DialogService,
+        CategoryService,
         MatDialog,
         MedTaggerWebSocket,
     ],
