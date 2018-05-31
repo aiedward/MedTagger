@@ -9,6 +9,7 @@ import {ROISelection3D} from '../../model/ROISelection3D';
 import {RectROISelector} from '../../components/selectors/RectROISelector';
 import {ROISelection2D} from '../../model/ROISelection2D';
 import {DialogService} from '../../services/dialog.service';
+import {FormControl, Validators} from '@angular/forms';
 import {Location} from '@angular/common';
 import {MatSnackBar} from '@angular/material';
 import {LabelExplorerComponent} from '../../components/label-explorer/label-explorer.component';
@@ -35,6 +36,7 @@ export class MarkerPageComponent implements OnInit {
     currentTag: string;
     lastSliceID = 0;
     startTime: Date;
+    tagsControl: FormControl;
 
     constructor(private scanService: ScanService, private categoryService: CategoryService, private route: ActivatedRoute, private dialogService: DialogService,
                 private location: Location, private snackBar: MatSnackBar) {
@@ -43,6 +45,12 @@ export class MarkerPageComponent implements OnInit {
 
     ngOnInit() {
         console.log('MarkerPage init', this.marker);
+
+        this.tagsControl = new FormControl('', [Validators.required]);
+        this.tagsControl.markAsTouched();
+
+        // TODO: Do not let user use marker if he/she does not pick any label tag
+        // TODO: Show snackbar/or dialog when he/she tries to use marker
 
         this.scanCategory = this.categoryService.getCurrentCategory();
 
