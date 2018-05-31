@@ -33,4 +33,5 @@ matrix:
       env: FRONTEND=production_build
       script:
         - ./.travis/run_tests_if_subproject_changed.py frontend --command="
-           docker-compose build medtagger_frontend"
+           docker-compose build medtagger_frontend &&
+           docker-compose run --no-deps medtagger_frontend ng lint"
